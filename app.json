@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "3Angels Time",
+    "slug": "3AngelsTime",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.threeanges.threeangelstime",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.threeanges.threeangelstime",
+      "permissions": [ "INTERNET"],
+      "versionCode": 1
+    },
+    "description": "Отмечалка Три Ангела",
+  }
+}
