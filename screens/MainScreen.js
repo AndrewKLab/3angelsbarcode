@@ -5,7 +5,7 @@ import {
   FlatList,
   Text,
   AsyncStorage,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import { Surface, List, Title } from 'react-native-paper';
 import Constants from 'expo-constants';
@@ -32,8 +32,7 @@ export default class MainScreen extends React.Component {
     try {
       const id = await AsyncStorage.getItem(localStorage);
       if (id !== null) {
-        this.props.navigation.navigate('User', { id: id });
-        console.log(id);
+        this.props.navigation.navigate('User', { id: id, navigation: this.props.navigation });
         axios
           .get('http://t.3angels.lan:8080/app/')
           .then((response) => {
@@ -78,15 +77,28 @@ export default class MainScreen extends React.Component {
         this.props.navigation.navigate('Error');
       });
   }
+
   onRefresh() {
     this.setState({ isFetching: true });
     this.getApiData();
   }
 
   goToUser = async (id) => {
+    await AsyncStorage.setItem(localStorage, id);
     try {
-      await AsyncStorage.setItem(localStorage, id);
-      this.props.navigation.navigate('User', { id: id });
+      axios
+        .get('http://t.3angels.lan:8080/app/')
+        .then((response) => {
+          this.props.navigation.navigate('User', { id: id, navigation: this.props.navigation });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({
+            error: true,
+            isFetching: false,
+          });
+          this.props.navigation.navigate('Error');
+        });
     } catch (e) {
       console.error('Failed to save name.');
     }

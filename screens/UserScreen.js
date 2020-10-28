@@ -1,20 +1,42 @@
 import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  Dimensions,
-} from 'react-native';
+import { View, StyleSheet, FlatList, Text, Dimensions } from 'react-native';
 import { Surface, List, Title, Button } from 'react-native-paper';
 import Constants from 'expo-constants';
 import { normalize } from '../components/FontResizer.js';
 import axios from 'axios';
 import moment from 'moment';
+import { HeaderBackButton } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default class UserScreen extends React.Component {
+  static navigationOptions = (props) => ({
+    title: null,
+    headerLeft: () => (
+      <HeaderBackButton
+        {...props}
+        onPress={() => {
+          axios
+            .get('http://t.3angels.lan:8080/app/')
+            .then((response) => {
+              props.route.params.navigation.goBack();
+            })
+
+            .catch((error) => {
+              console.log(error);
+              props.route.params.navigation.dispatch(
+                CommonActions.reset({
+                  index: 1,
+                  routes: [{ name: 'Error' }],
+                })
+              );
+            });
+        }}
+      />
+    ),
+  });
+
   constructor(props) {
     super(props);
     this.op;
@@ -36,10 +58,7 @@ export default class UserScreen extends React.Component {
 
   getUser() {
     axios
-      .get(
-        'http://t.3angels.lan:8080/app/?ID=' +
-          this.props.route.params.id
-      )
+      .get('http://t.3angels.lan:8080/app/?ID=' + this.props.route.params.id)
       .then((response) => {
         this.dd = response.data.DD;
         this.setState({
@@ -93,42 +112,48 @@ export default class UserScreen extends React.Component {
 
       .catch((error) => {
         console.log(error);
+        this.props.route.params.navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: 'Error' }],
+          })
+        );
       });
   }
   render() {
     return (
-        <View style={styles.containerMain}>
-          <View style={{ marginTop: 30 }}>
-            <View>
-              <Text style={styles.textStyle}>{this.state.name}</Text>
-              <Text style={styles.subTextStyle}>{this.state.messege}</Text>
-              <Text>{this.state.time}</Text>
-              <Text>
-                {this.status} {this.error}
-              </Text>
-              <Text></Text>
-            </View>
-          </View>
-          <View style={styles.bottomView}>
-            {this.dd === '2' ? (
-              <Button
-                style={styles.cameBtn}
-                contentStyle={styles.cameBtn}
-                mode="contained"
-                onPress={() => this.changeStatus()}>
-                Пришел
-              </Button>
-            ) : (
-              <Button
-                style={styles.goneBtn}
-                contentStyle={styles.goneBtn}
-                mode="contained"
-                onPress={() => this.changeStatus()}>
-                Ушел
-              </Button>
-            )}
+      <View style={styles.containerMain}>
+        <View style={{ marginTop: 30 }}>
+          <View>
+            <Text style={styles.textStyle}>{this.state.name}</Text>
+            <Text style={styles.subTextStyle}>{this.state.messege}</Text>
+            <Text>{this.state.time}</Text>
+            <Text>
+              {this.status} {this.error}
+            </Text>
+            <Text></Text>
           </View>
         </View>
+        <View style={styles.bottomView}>
+          {this.dd === '2' ? (
+            <Button
+              style={styles.cameBtn}
+              contentStyle={styles.cameBtn}
+              mode="contained"
+              onPress={() => this.changeStatus()}>
+              Пришел
+            </Button>
+          ) : (
+            <Button
+              style={styles.goneBtn}
+              contentStyle={styles.goneBtn}
+              mode="contained"
+              onPress={() => this.changeStatus()}>
+              Ушел
+            </Button>
+          )}
+        </View>
+      </View>
     );
   }
 }

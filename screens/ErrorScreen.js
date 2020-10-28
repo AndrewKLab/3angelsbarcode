@@ -15,9 +15,9 @@ export default class ErrorScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getApiData()
+    this.getApiData();
   }
-  
+
   getApiData() {
     axios
       .get('http://t.3angels.lan:8080/app/')
@@ -29,12 +29,9 @@ export default class ErrorScreen extends React.Component {
         this.props.navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [
-              { name: 'Main' },
-            ],
+            routes: [{ name: 'Main' }],
           })
         );
-        
       })
       .catch((error) => {
         console.log(error);
@@ -64,10 +61,7 @@ export default class ErrorScreen extends React.Component {
         renderItem={({ item, index }) => {
           return (
             <View>
-              <Text style={styles.textStyle}>Network Error</Text>
-              <Text style={styles.subTextStyle}>
-                Error: Выбрана неверная сеть.
-              </Text>
+              <Text style={styles.textStyle}>Выбрана неверная сеть.</Text>
               <Text style={styles.subSubTextStyle}>
                 Пожалуйста, подключитесь к WIFI сети 3angels. За информацией по
                 подключению, можно обратиться к администратору.
@@ -88,19 +82,12 @@ const styles = StyleSheet.create({
 
   textStyle: {
     color: '#212121',
-    fontSize: normalize(26),
+    fontSize: normalize(18),
     textAlign: 'center',
     fontWeight: 'bold',
-    marginBottom: 50
+    marginBottom: 20,
   },
-
-  subTextStyle: {
-    color: '#212121',
-    fontSize: normalize(16),
-    textAlign: 'center',
-    marginBottom: 20
-  },
-
+  
   subSubTextStyle: {
     color: '#212121',
     fontSize: normalize(14),
