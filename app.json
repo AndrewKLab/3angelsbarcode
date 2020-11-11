@@ -2,7 +2,7 @@
   "expo": {
     "name": "3Angels Time",
     "slug": "3AngelsTime",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
     "android": {
       "package": "com.threeanges.threeangelstime",
       "permissions": [ "INTERNET"],
-      "versionCode": 2
+      "versionCode": 3
     },
     "description": "Отмечалка Три Ангела"
   }
